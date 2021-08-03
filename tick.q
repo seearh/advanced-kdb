@@ -1,25 +1,25 @@
-/ q tick.q sym . -p 5001 </dev/null >foo 2>&1 &
-/2014.03.12 remove license check
-/2013.09.05 warn on corrupt log
-/2013.08.14 allow <endofday> when -u is set
-/2012.11.09 use timestamp type rather than time. -19h/"t"/.z.Z -> -16h/"n"/.z.P
-/2011.02.10 i->i,j to avoid duplicate data if subscription whilst data in buffer
-/2009.07.30 ts day (and "d"$a instead of floor a)
-/2008.09.09 .k -> .q, 2.4
-/2008.02.03 tick/r.k allow no log
-/2007.09.03 check one day flip
-/2006.10.18 check type?
-/2006.07.24 pub then log
-/2006.02.09 fix(2005.11.28) .z.ts end-of-day
-/2006.01.05 @[;`sym;`g#] in tick.k load
-/2005.12.21 tick/r.k reset `g#sym
-/2005.12.11 feed can send .u.endofday
-/2005.11.28 zero-end-of-day
-/2005.10.28 allow`time on incoming
-/2005.10.10 zero latency
+\
+ globals used
+ .u.w - dictionary of tables->(handle;syms)
+ .u.i - msg count in log file
+ .u.j - total msg count (log file plus those held in buffer)
+ .u.t - table names
+ .u.L - tp log filename, e.g. `:./sym2008.09.11
+ .u.l - handle to tp log file
+ .u.d - date
+
+/test
+>q tick.q
+>q tick/ssl.q
+
+/run
+>q tick.q sym  .  -p 5010	/tick
+>q tick/r.q :5010 -p 5011	/rdb
+>q sym            -p 5012	/hdb
+>q tick/ssl.q sym :5010		/feed
+
 "kdb+tick 2.8 2014.03.12"
 
-/q tick.q SRC [DST] [-p 5010] [-o h]
 system"l tick/",(src:first .z.x,enlist"sym"),".q"
 
 if[not system"p";system"p 5010"]
@@ -46,23 +46,3 @@ if[not system"t";system"t 1000";
 
 \d .
 .u.tick[src;.z.x 1];
-
-\
- globals used
- .u.w - dictionary of tables->(handle;syms)
- .u.i - msg count in log file
- .u.j - total msg count (log file plus those held in buffer)
- .u.t - table names
- .u.L - tp log filename, e.g. `:./sym2008.09.11
- .u.l - handle to tp log file
- .u.d - date
-
-/test
->q tick.q
->q tick/ssl.q
-
-/run
->q tick.q sym  .  -p 5010	/tick
->q tick/r.q :5010 -p 5011	/rdb
->q sym            -p 5012	/hdb
->q tick/ssl.q sym :5010		/feed
