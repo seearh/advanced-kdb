@@ -1,3 +1,3 @@
-trades: ([] time: `timespan$(); sym: `symbol$(); price: `float$());
-quotes: ([] time: `timespan$(); sym: `symbol$(); bid: `float$(); ask: `float$());
-aggregate: ([] time: `timespan$(); sym: `symbol$(); pmax: `float$(); pmin: `float$(); hibid: `float$(); loask: `float$(); volume: `int$());
+trades: flip `time`sym`price`size!"nsfj"$\:();
+quotes: flip `time`sym`bid`ask!"nsff"$\:();
+agg: flip `time`sym`pmax`pmin`hibid`loask`volume!"nsffffj"$\:();
