@@ -13,14 +13,13 @@ tick:(hsym `$":",tick;`::5010) ""~tick;
 h: @[hopen;tick;{'"Could not connect to ticker plant at ", (-3!tick), " due to: ", x}];
 
 / Validate table to publish to
-tab: `$tab;
-if[not tab in t:h`.u.t;'tab, " table does not exist in tickerplant. Tables include: ", -3!t];
+if[not (tab:`$tab) in t:h`.u.t;'string[tab], " table does not exist in tickerplant. Tables include: ", -3!t];
 
-/ Read in CSV (without column names, takes schema from tickerplant)
-tab_types: upper exec t from h(`.q.meta;tab);
-data: (tab_types;csv) 0: hsym `$fp;
+/ Read in CSV with schema from tickerplant
+m: exec upper t, c from h(`.q.meta;tab);
+data: m[`c] xcols (m`t;enlist csv) 0: hsym `$fp;
 
 / Publish to ticker plant
-h(`.u.upd;tab;data);
-0N!"Published ", (string count flip data), " rows to ", (string tab), " table in tickerplant at ", -3!tick;
+h(`.u.upd;tab;value flip data);
+0N!"Published ", string[count data], " rows to ", string[tab], " table in tickerplant at ", -3!tick;
 exit 0;
