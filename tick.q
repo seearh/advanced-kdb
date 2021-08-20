@@ -1,3 +1,4 @@
+/q tick.q [host]:port[:usr:pwd]
 /
     globals used
     .u.w - dictionary of tables->(handle;syms)
@@ -7,19 +8,7 @@
     .u.L - tp log filename, e.g. `:./sym2008.09.11
     .u.l - handle to tp log file
     .u.d - date
-
-    test
-    >q tick.q
-    >q tick/ssl.q
-
-    run
-    >q tick.q sym  .  -p 5010	/tick
-    >q tick/r.q :5010 -p 5011	/rdb
-    >q sym            -p 5012	/hdb
-    >q tick/ssl.q sym :5010	/feed
 \
-
-"kdb+tick 2.8 2014.03.12"
 
 system"l tick/",(src:first .z.x,enlist"sym"),".q"
 

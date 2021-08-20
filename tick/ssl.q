@@ -1,6 +1,7 @@
+/ q tick/ssl.q SCHEMA [host]:port[:usr:pwd]
+
 `schema`tick set' .z.x 0 1;
 
-/ Load in schema file
 system"l tick/",(first enlist[schema],enlist"sym"),".q";
 
 / Initialize logging

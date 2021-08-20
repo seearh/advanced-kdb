@@ -1,4 +1,4 @@
-/q tick/cep.q [host]:port[:usr:pwd]
+/ q tick/cep.q [host]:port[:usr:pwd]
 
 / Initialize logging
 system"l utils/logging.q";

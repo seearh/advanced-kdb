@@ -1,7 +1,3 @@
-/2019.06.17 ensure sym has g attr for schema returned to new subscriber
-/2008.09.09 .k -> .q
-/2006.05.08 add
-
 \d .u
 init:{w::t!(count t::tables`.)#()}
 

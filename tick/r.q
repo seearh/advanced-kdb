@@ -1,4 +1,4 @@
-/q tick/r.q [host]:port[:usr:pwd] [host]:port[:usr:pwd] [-tabs TAB1,TAB2,...]
+/ q tick/r.q [host]:port[:usr:pwd] [host]:port[:usr:pwd] [-tabs TAB1,TAB2,...]
 
 if[not "w"=first string .z.o;system "sleep 1"];
 
@@ -33,7 +33,6 @@ if[not ()~tabs:first (.Q.opt .z.X)@`tabs;
         .log.info["Replay complete, current working directory is ", system "cd"]
         ];
     };
-/ HARDCODE \cd if other than logdir/db
 
 .log.info["Connecting to tickerplant at ", -3!tick:`$":",.u.x 0];
 h:hopen tick;
