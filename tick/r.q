@@ -2,7 +2,7 @@
 
 if[not "w"=first string .z.o;system "sleep 1"];
 
-upd:insert;
+upd:{ if[x in tables`.;x insert y] };
 
 / Initialize logging
 system"l utils/logging.q";
