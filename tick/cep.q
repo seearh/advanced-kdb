@@ -4,7 +4,7 @@
 system"l utils/logging.q";
 .log.initLog[`:log;`;1];
 
-upd:insert;
+upd:{ if[x in tables`.;x insert y] };
 
 tick:(hsym `$":",tick;`::5010) ""~tick:.z.x 0;
 .log.info["Connecting to tickerplant at ", -3!tick];
