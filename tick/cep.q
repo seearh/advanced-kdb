@@ -1,19 +1,25 @@
 /q tick/cep.q [host]:port[:usr:pwd]
 
+/ Initialize logging
+system"l utils/logging.q";
+.log.initLog[`:log;`;1];
+
 upd:insert;
 
-/ Connect to ticker plant
 tick:(hsym `$":",tick;`::5010) ""~tick:.z.x 0;
-h: @[hopen;tick;{'"Could not connect to ticker plant at ", (-3!tick), " due to: ", x}];
+.log.info["Connecting to tickerplant at ", -3!tick];
+h: @[hopen;tick;{.log.err["Could not connect to ticker plant at ", (-3!tick), " due to: ", x]}];
 
-/ Subscribe to trades and quotes table
-tabs:`trades`quotes;
+.log.info["Tables to subscribe to: ", -3!tabs:`trades`quotes];
 .u.rep:{ [x;y]
+    .log.info["Initializing schema of ", -3!x];
     (.[;();:;].) each $[all null tabs;x;enlist x];
     if[null first y;:()];
     if[all tabs in tables[];
+        .log.info["Replaying ",(-3!y 0)," rows from ",(-3!y 1)];
         -11!y;
-        ]
+        .log.info["Replay complete"]
+        ];
     };
 subMsg:{ "(.u.sub[",(.Q.s1 x),";`];`.u `i`L)" };
 { .u.rep . @[h;subMsg x] } each tabs;
@@ -26,5 +32,5 @@ calc_agg: {
     };
 .z.ts: { h(`.u.upd;`agg;value flip calc_agg[]); };
 
-/ Start timer
+.log.info["Starting timer..."];
 system "t 1000";

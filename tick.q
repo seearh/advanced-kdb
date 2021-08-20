@@ -23,6 +23,10 @@
 
 system"l tick/",(src:first .z.x,enlist"sym"),".q"
 
+/ Initialize logging
+system"l utils/logging.q";
+.log.initLog[`:log;`;1];
+
 if[not system"p";system"p 5010"]
 
 \l tick/u.q
@@ -34,12 +38,14 @@ endofday:{end d;d+:1;if[l;hclose l;l::0(`.u.ld;d)]};
 ts:{if[d<x;if[d<x-1;system"t 0";'"more than one day?"];endofday[]]};
 
 if[system"t";
+ .log.info["Starting tickerplant in zero latency mode"];
  .z.ts:{pub'[t;value each t];@[`.;t;@[;`sym;`g#]0#];i::j;ts .z.D};
  upd:{[t;x]
  if[not -16=type first first x;if[d<"d"$a:.z.P;.z.ts[]];a:"n"$a;x:$[0>type first x;a,x;(enlist(count first x)#a),x]];
  t insert x;if[l;l enlist (`upd;t;x);j+:1];}];
 
 if[not system"t";system"t 1000";
+ .log.info["Starting tickerplant in batch mode"];
  .z.ts:{ts .z.D};
  upd:{[t;x]ts"d"$a:.z.P;
  if[not -16=type first first x;a:"n"$a;x:$[0>type first x;a,x;(enlist(count first x)#a),x]];
@@ -47,3 +53,4 @@ if[not system"t";system"t 1000";
 
 \d .
 .u.tick[src;.z.x 1];
+.log.info["Tickerplant initialization complete"];

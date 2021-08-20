@@ -5,7 +5,16 @@
 \d .u
 init:{w::t!(count t::tables`.)#()}
 
-del:{w[x]_:w[x;;0]?y};.z.pc:{del[;x]each t};
+del:{w[x]_:w[x;;0]?y};
+
+/ Override .z.pc
+.z.pc: {
+    user: string .z.u;
+    host: string .z.h;
+    add: "." sv string "i"$0x0 vs .z.a;
+    .log.info["A connection is closed by ", user, "@", host, " from ", add, " on handle ", -3!x];
+    del[;x]each t;
+    };
 
 sel:{$[`~y;x;select from x where sym in y]}
 
