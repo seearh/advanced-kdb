@@ -1,4 +1,4 @@
-/ q tick/r.q [host]:port[:usr:pwd] [host]:port[:usr:pwd] [-tabs TAB1,TAB2,...]
+/ q tick/r.q [host]:port[:usr:pwd] [host]:port[:usr:pwd] [-tabs TAB1,TAB2,...] [-db dbDir]
 
 if[not "w"=first string .z.o;system "sleep 1"];
 
@@ -8,7 +8,7 @@ upd:{ if[x in tables`.;x insert y] };
 system"l utils/logging.q";
 .log.initLog[`:log;`;1];
 
-if[not ()~tabs:first (.Q.opt .z.X)@`tabs;
+if[not ()~tabs:first (o:.Q.opt .z.X)@`tabs;
     tabs:`$"," vs tabs];
 .log.info["Tables to subscribe to: ", -3!tabs];
 
@@ -29,7 +29,9 @@ if[not ()~tabs:first (.Q.opt .z.X)@`tabs;
     if[all tabs in tables[];
         .log.info["Replaying ",(-3!y 0)," rows from ",(-3!y 1)," and cd to HDB"];
         -11!y;
-        system "cd ",1_-10_string first reverse y;       / HARDCODE \cd if other than logdir/db
+        $[`db in key o;
+            system "cd ", first o`db;
+            system "cd ",1_-10_string first reverse y];
         .log.info["Replay complete, current working directory is ", system "cd"]
         ];
     };
