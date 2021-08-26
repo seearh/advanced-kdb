@@ -43,3 +43,27 @@ subMsg:{ "(.u.sub[",(.Q.s1 x),";`];`.u `i`L)" };
 $[count tabs;
     { .u.rep . @[h;subMsg x] } each tabs;
     .u.rep . @[h;subMsg `]];
+
+/ Functions to be called through WebSocket
+.z.ws: { value x };
+.z.wc: { delete from `subs where handle=x };
+loadPage:{ getSyms[.z.w]; sub[`getTrades;enlist `] };
+getSyms:{ (neg[x]) .j.j `func`result!(`getSyms;distinct trades`sym) };
+filterSyms:{ sub[`getTrades;x] };
+getTrades:{
+    filter:$[all raze null x;distinct trades`sym;raze x];
+    res: reverse select from trades where sym in filter;
+    `func`result!(`getTrades;res)
+    };
+
+/ Subscription table to keep track of current subscriptions via Websocket
+subs: 2!flip `handle`func`params!"is*"$\:();
+sub: { `subs upsert(.z.w;x;enlist y) };
+pub: {
+    row:(0!subs)[x];
+    (neg row[`handle]) .j.j (value row[`func])[row[`params]]
+    };
+
+/ Trigger refresh every 1000ms
+.z.ts:{ pub each til count subs };
+\t 1000
