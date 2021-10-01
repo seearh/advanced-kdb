@@ -36,7 +36,7 @@ stderr:{neg[2i] x};
 logging: { [msg; lvl]
     msg:string[.z.P], header[], " ", msg;
     stdout msg;
-    if[lvl>=first level;neg[handle] msg];
+    {y x}[msg] each neg handle where lvl>=level;
     if[lvl>=3;stderr msg]
     };
 
