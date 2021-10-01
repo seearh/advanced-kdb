@@ -30,9 +30,14 @@ header: {
     "[", hdr, "]"
     };
 
+stdout:{neg[1i] x};
+stderr:{neg[2i] x};
+
 logging: { [msg; lvl]
     msg:string[.z.P], header[], " ", msg;
-    {y x}[msg] each neg 1 2i,handle where level >= lvl;
+    stdout msg;
+    if[lvl>=first level;neg[handle] msg];
+    if[lvl>=3;stderr msg]
     };
 
 debug: logging[;0];
