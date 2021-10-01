@@ -23,7 +23,7 @@ m: exec upper t, c from h(`.q.meta;tab);
 / Use embedPy to read CSV into q
 pd:.p.import`pandas;
 read_csv:pd`:read_csv;
-df:read_csv["TRADES.csv"];
+df:read_csv[fp];
 data:flip m[`c]!df[;`:tolist;<;(::)] each hsym m`c;
 
 / Columns typing
