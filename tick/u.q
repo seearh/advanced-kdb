@@ -1,5 +1,5 @@
 \d .u
-init:{w::t!(count t::tables`.)#()}
+init:{w::t!(count t::tables`.)#();J::t!count[t]#0}
 
 del:{w[x]_:w[x;;0]?y};
 
